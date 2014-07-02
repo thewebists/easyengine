@@ -38,6 +38,7 @@ if [ ! -x  /usr/bin/lsb_release ]; then
 fi
 
 # Define variables for later use
+readonly EE_GIT_REPO=https://github.com/rtCamp/easyengine
 readonly EE_LOG_DIR=/var/log/easyengine
 readonly EE_INSTALL_LOG=/var/log/easyengine/install.log
 readonly EE_ERROR_LOG=/var/log/easyengine/error.log
@@ -61,7 +62,7 @@ function ee_lib_error()
 function ee_lib_package_check()
 {
 	local ee_package
-	
+
 	for ee_package in $@;do
 		dpkg --get-selections | grep -v deinstall | grep $ee_package &>> $EE_INSTALL_LOG
 
@@ -107,18 +108,18 @@ if [ -z "$BRANCH" ]; then
 	BRANCH=stable
 else
 	# Cross check EasyEngine (ee) branch name
-	git ls-remote --heads https://github.com/rtCamp/easyengine | grep $BRANCH &>> $EE_INSTALL_LOG
+	git ls-remote --heads $EE_GIT_REPO | grep $BRANCH &>> $EE_INSTALL_LOG
 	if [ $? -ne 0 ]; then
 		ee_lib_error "The $BRANCH branch does not exist, please provide the correct branch name, exit status = " $?
 	fi
 fi
 
-# Remove old version of EasyEngine (ee) 
+# Remove old version of EasyEngine (ee)
 rm -rf /tmp/easyengine &>> /dev/null
 
 # Let's clone EasyEngine (ee)
 ee_lib_echo "Cloning EasyEngine (ee) $BRANCH branch, please wait..." | tee -ai $EE_INSTALL_LOG
-git clone -b $BRANCH https://github.com/rtCamp/easyengine.git /tmp/easyengine &>> $EE_INSTALL_LOG || ee_lib_error "Unable to clone EasyEngine (ee) $BRANCH branch, exit status = " $?
+git clone -b $BRANCH $EE_GIT_REPO.git /tmp/easyengine &>> $EE_INSTALL_LOG || ee_lib_error "Unable to clone EasyEngine (ee) $BRANCH branch, exit status = " $?
 
 
 # Setup EasyEngine (ee)

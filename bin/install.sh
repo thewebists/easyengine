@@ -38,7 +38,7 @@ if [ ! -x  /usr/bin/lsb_release ]; then
 fi
 
 # Define variables for later use
-readonly EE_GIT_REPO=https://github.com/rtCamp/easyengine
+readonly EE_GIT_REPO=https://github.com/thewebists/easyengine
 readonly EE_LOG_DIR=/var/log/easyengine
 readonly EE_INSTALL_LOG=/var/log/easyengine/install.log
 readonly EE_ERROR_LOG=/var/log/easyengine/error.log
